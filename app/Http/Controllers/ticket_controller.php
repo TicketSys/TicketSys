@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\TicketCategory;
 use Illuminate\Http\Request;
+use App\tickets;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+
 
 class ticket_controller extends Controller
 {
@@ -13,7 +18,10 @@ class ticket_controller extends Controller
      */
     public function index()
     {
-        //
+        $tickets = tickets::all()->toArray();
+
+        return view('index', compact('tickets'));
+
     }
 
     /**
@@ -21,9 +29,11 @@ class ticket_controller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function create()
     {
-        //
+        $categories = TicketCategory::all();
+        return view('tickets.new_ticket', ['categories'=>$categories]);
     }
 
     /**
@@ -34,7 +44,16 @@ class ticket_controller extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $ticket = new tickets([
+            'title'             => $request->get('title'),
+            'description'       => $request->get('description'),
+            'picture'           => $request->get('picture'),
+            'adress'            => $request->get('adress'),
+            'category_id'       => $request->get('category_id'),
+        ]);
+
+        $ticket->save();
+        return redirect('/tickets');
     }
 
     /**
