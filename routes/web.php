@@ -14,4 +14,13 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
 Route::resource('tickets', 'ticket_controller');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('home/{ticket_id}/comments', 'CommentController');
+
+
+
